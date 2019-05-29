@@ -10,8 +10,6 @@ env:
     - CMAKE_OPTIONS="-DCMAKE_PREFIX_PATH=${DEPS_DIR}/install -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/install"
     
 cache:
-  directories:
-  - ${DEPS_DIR}
   - g++-7
   - clang-3.7
 
