@@ -58,11 +58,14 @@ install:
     - cmake ${CMAKE_OPTIONS} -H. -Bbuild
     - cd build
     - make && make install
+    - cd ${TRAVIS_BUILD_DIR}
      
 script:
     ############################################################################
     # Build main and tests
     ############################################################################
+     - pwd
+     - ls
      - mkdir -p build
      - cd build
      - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DBUILD_TESTS=ON .. 
