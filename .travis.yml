@@ -14,6 +14,8 @@ env:
 cache:
   directories:
   - ${DEPS_DIR}
+  - g++-7
+  - clang-3.7
 
 matrix:
   include:
@@ -26,7 +28,6 @@ matrix:
          packages: 
            - g++-7
            - clang-3.7
-           - valgrind
          sources: 
            - ubuntu-toolchain-r-test
            - llvm-toolchain-precise-3.7
@@ -35,8 +36,8 @@ before_install:
     # Combine global build options with OS/compiler-dependent options
     - export CMAKE_OPTIONS="${CMAKE_OPTIONS} ${ENV_CMAKE_OPTIONS}"
     - export CXX_FLAGS="${CXX_FLAGS} ${ENV_CXX_FLAGS}"
-    - mkdir ${DEPS_DIR}
-    - mkdir ${DEPS_DIR}/install
+    - mkdir -p ${DEPS_DIR}
+    - mkdir -p ${DEPS_DIR}/install
     
 install:
     - export CXX="g++-7" CC="gcc-7"
