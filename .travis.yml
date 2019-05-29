@@ -9,6 +9,7 @@ env:
     - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow"
     - CMAKE_PREFIX_PATH=${DEPS_DIR}/install
     - CMAKE_INSTALL_PREFIX=${DEPS_DIR}/install
+    - ENV_CMAKE_OPTIONS ="-DCMAKE_PREFIX_PATH=${DEPS_DIR}/install -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/install"
 
 matrix:
   include:
@@ -30,12 +31,8 @@ before_install:
     # Combine global build options with OS/compiler-dependent options
     - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
     - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
-    - mkdir deps
-    - cd ${DEPS_DIR}
-    - mkdir install
-    - git clone https://github.com/CMakePackagingProject/CMakePackagingProject
-    - cd CMakePackagingProject
-    - cmake -DCMAKE_--build . --target install
+    - mkdir ${DEPS_DIR}
+    - mkdir ${DEPS_DIR}/install
     
 install:
     - export CXX="g++-7" CC="gcc-7"
@@ -47,15 +44,17 @@ install:
     # Download and install recent cmake
     - |
       if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
-        CMAKE_URL="http://www.cmake.org/files/v3.5/cmake-3.5.1-Linux-x86_64.tar.gz"
+        CMAKE_URL="https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz"
         mkdir -p ${DEPS_DIR}/cmake
         travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
         export PATH=${DEPS_DIR}/cmake/bin:${PATH}
       fi
       # Download and install CMakePackagingProject
-    - |
-      if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
-      
+    - cd ${DEPS_DIR}
+    - git clone https://github.com/CMakePackagingProject/CMakePackagingProject
+    - cd CMakePackagingProject
+    - cmake -DCMAKE_--build . --target install
+     
 script:
     ############################################################################
     # Build main and tests
