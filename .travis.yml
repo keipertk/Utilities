@@ -7,9 +7,7 @@ env:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     # Global build options and C++ flags
     - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow"
-    - CMAKE_PREFIX_PATH=${DEPS_DIR}/install
-    - CMAKE_INSTALL_PREFIX=${DEPS_DIR}/install
-    - ENV_CMAKE_OPTIONS ="-DCMAKE_PREFIX_PATH=${DEPS_DIR}/install -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/install"
+    - CMAKE_OPTIONS ="-DCMAKE_PREFIX_PATH=${DEPS_DIR}/install -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/install"
     
 cache:
   directories:
@@ -33,9 +31,6 @@ matrix:
            - llvm-toolchain-precise-3.7
     
 before_install:
-    # Combine global build options with OS/compiler-dependent options
-    - export CMAKE_OPTIONS="${CMAKE_OPTIONS} ${ENV_CMAKE_OPTIONS}"
-    - export CXX_FLAGS="${CXX_FLAGS} ${ENV_CXX_FLAGS}"
     - mkdir -p ${DEPS_DIR}
     - mkdir -p ${DEPS_DIR}/install
     
@@ -61,7 +56,8 @@ install:
     - git clone https://github.com/CMakePackagingProject/CMakePackagingProject
     - cd CMakePackagingProject
     - cmake ${CMAKE_OPTIONS} -H. -Bbuild
-    - cd build; make install
+    - cd build
+    - make && make install
      
 script:
     ############################################################################
