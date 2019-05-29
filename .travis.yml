@@ -2,10 +2,8 @@ language: cpp
 
 env:
   global:
-    # Ubuntu version
     - LINUX_DIST=trusty
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-    # Global build options and C++ flags
     - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow"
     - CMAKE_OPTIONS="-DCMAKE_PREFIX_PATH=${DEPS_DIR}/install -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/install"
     
@@ -15,7 +13,7 @@ cache:
 matrix:
   include:
     - os: linux
-      dist: trusty
+      dist: xenial
       sudo: true
       compiler: gcc
       addons:
@@ -38,19 +36,12 @@ install:
     - echo ${CMAKE_OPTIONS}
     
     # Download and install recent cmake
-    - |
-      if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
-        CMAKE_URL="https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz"
-        mkdir -p ${DEPS_DIR}/cmake
-        travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
-        export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-      fi
+    - cmake --version
       # Download and install CMakePackagingProject
     - cd ${DEPS_DIR}
     - git clone https://github.com/CMakePackagingProject/CMakePackagingProject
     - cd CMakePackagingProject
-    - cmake ${CMAKE_OPTIONS} -H. -Bbuild
-    - cd build
+    - cmake ${CMAKE_OPTIONS} --build .
     - make && make install
     - cd ${TRAVIS_BUILD_DIR}
      
@@ -58,8 +49,6 @@ script:
     ############################################################################
     # Build main and tests
     ############################################################################
-     - mkdir -p build
-     - cd build
-     - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DBUILD_TESTS=ON .. 
+     - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DBUILD_TESTS=ON --build .
      - make
      - ctest
