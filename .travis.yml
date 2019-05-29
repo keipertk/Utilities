@@ -1,60 +1,48 @@
-language: cpp
-
-env:
-  global:
-    - LINUX_DIST=trusty
-    - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-    - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow"
-    - CMAKE_OPTIONS="-DCMAKE_PREFIX_PATH=${DEPS_DIR}/install -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/install"
-    
-cache:
+--- 
+before_install: 
+  - "mkdir -p ${DEPS_DIR}"
+  - "mkdir -p ${DEPS_DIR}/install"
+cache: 
   - g++-8
   - gcc-8
-
-matrix:
-  include:
-    - os: linux
-      dist: xenial
-      sudo: true
-      compiler: gcc
-      addons:
-       apt:
-         sources: 
-           - sourceline: 'deb https://apt.kitware.com/ubuntu/ xenial main'
-             key_url: 'https://apt.kitware.com/keys/kitware-archive-latest.asc'        
-            - ubuntu-toolchain-r-test         
+env: 
+  global: 
+    - LINUX_DIST=trusty
+    - "DEPS_DIR=${TRAVIS_BUILD_DIR}/deps"
+    - "CXX_FLAGS=\"-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow\""
+    - "CMAKE_OPTIONS=\"-DCMAKE_PREFIX_PATH=${DEPS_DIR}/install -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/install\""
+install: 
+  - "export CXX=\"g++-8\" CC=\"gcc-8\""
+  - "echo ${PATH}"
+  - "echo ${CXX}"
+  - "${CXX} --version"
+  - "${CXX} -v"
+  - "echo ${CMAKE_OPTIONS}"
+  - "cmake --version"
+  - "cd ${DEPS_DIR}"
+  - "git clone https://github.com/CMakePackagingProject/CMakePackagingProject"
+  - "cd CMakePackagingProject"
+  - "cmake ${CMAKE_OPTIONS} --build ."
+  - "make && make install"
+  - "cd ${TRAVIS_BUILD_DIR}"
+language: cpp
+matrix: 
+  include: 
+    - 
+      addons: 
+        apt: 
           packages: 
-           - cmake
-            - g++-8
-            - gcc-8
-
-    
-before_install:
-    - mkdir -p ${DEPS_DIR}
-    - mkdir -p ${DEPS_DIR}/install
-    
-install:
-    - export CXX="g++-8" CC="gcc-8"
-    - echo ${PATH}
-    - echo ${CXX}
-    - ${CXX} --version
-    - ${CXX} -v
-    - echo ${CMAKE_OPTIONS}
-    
-    # Download and install recent cmake
-    - cmake --version
-      # Download and install CMakePackagingProject
-    - cd ${DEPS_DIR}
-    - git clone https://github.com/CMakePackagingProject/CMakePackagingProject
-    - cd CMakePackagingProject
-    - cmake ${CMAKE_OPTIONS} --build .
-    - make && make install
-    - cd ${TRAVIS_BUILD_DIR}
-     
-script:
-    ############################################################################
-    # Build main and tests
-    ############################################################################
-     - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DBUILD_TESTS=ON --build .
-     - make
-     - ctest
+            - "cmake - g++-8 - gcc-8"
+          sources: 
+            - 
+              key_url: "https://apt.kitware.com/keys/kitware-archive-latest.asc"
+              sourceline: "deb https://apt.kitware.com/ubuntu/ xenial main"
+            - ubuntu-toolchain-r-test
+      compiler: gcc
+      dist: xenial
+      os: linux
+      sudo: true
+script: 
+  - "cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DBUILD_TESTS=ON --build ."
+  - make
+  - ctest
