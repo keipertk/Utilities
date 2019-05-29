@@ -10,6 +10,10 @@ env:
     - CMAKE_PREFIX_PATH=${DEPS_DIR}/install
     - CMAKE_INSTALL_PREFIX=${DEPS_DIR}/install
     - ENV_CMAKE_OPTIONS ="-DCMAKE_PREFIX_PATH=${DEPS_DIR}/install -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/install"
+    
+cache:
+  directories:
+  - ${DEPS_DIR}
 
 matrix:
   include:
