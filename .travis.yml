@@ -33,8 +33,8 @@ matrix:
     
 before_install:
     # Combine global build options with OS/compiler-dependent options
-    - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
-    - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+    - export CMAKE_OPTIONS="${CMAKE_OPTIONS} ${ENV_CMAKE_OPTIONS}"
+    - export CXX_FLAGS="${CXX_FLAGS} ${ENV_CXX_FLAGS}"
     - mkdir ${DEPS_DIR}
     - mkdir ${DEPS_DIR}/install
     
@@ -44,6 +44,8 @@ install:
     - echo ${CXX}
     - ${CXX} --version
     - ${CXX} -v
+    - echo "CMAKE_OPTIONS"
+    - echo ${CMAKE_OPTIONS}
     
     # Download and install recent cmake
     - |
