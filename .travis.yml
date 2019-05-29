@@ -11,7 +11,6 @@ env:
     
 cache:
   - g++-7
-  - clang-3.7
 
 matrix:
   include:
@@ -23,10 +22,8 @@ matrix:
        apt:
          packages: 
            - g++-7
-           - clang-3.7
          sources: 
            - ubuntu-toolchain-r-test
-           - llvm-toolchain-precise-3.7
     
 before_install:
     - mkdir -p ${DEPS_DIR}
@@ -38,7 +35,6 @@ install:
     - echo ${CXX}
     - ${CXX} --version
     - ${CXX} -v
-    - echo "CMAKE_OPTIONS"
     - echo ${CMAKE_OPTIONS}
     
     # Download and install recent cmake
@@ -62,8 +58,6 @@ script:
     ############################################################################
     # Build main and tests
     ############################################################################
-     - pwd
-     - ls
      - mkdir -p build
      - cd build
      - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DBUILD_TESTS=ON .. 
