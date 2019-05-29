@@ -22,11 +22,11 @@ matrix:
          packages: 
            - g++-8
            - gcc-8
-           -cmake
+           - cmake
          sources: 
-           - ubuntu-toolchain-r-test
            - sourceline: 'deb https://apt.kitware.com/ubuntu/ xenial main'
              key_url: 'https://apt.kitware.com/keys/kitware-archive-latest.asc'
+            - ubuntu-toolchain-r-test
     
 before_install:
     - mkdir -p ${DEPS_DIR}
