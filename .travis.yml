@@ -53,7 +53,7 @@ install:
     - cd ${DEPS_DIR}
     - git clone https://github.com/CMakePackagingProject/CMakePackagingProject
     - cd CMakePackagingProject
-    - cmake ---build . --target install
+    - cmake ${CMAKE_OPTIONS} ---build . --target install
      
 script:
     ############################################################################
