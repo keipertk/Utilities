@@ -8,20 +8,18 @@ cache:
   - gcc-8
 env: 
   global: 
-    - LINUX_DIST=trusty
+    - LINUX_DIST=xenial
     - "DEPS_DIR=${TRAVIS_BUILD_DIR}/deps"
     - "CXX_FLAGS=\"-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow\""
     - "CMAKE_OPTIONS=\"-DCMAKE_PREFIX_PATH=${DEPS_DIR}/install -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/install\""
 install: 
+  - "alias cmake=/usr/bin/cmake"
   - "export CXX=\"g++-8\" CC=\"gcc-8\""
   - "echo ${PATH}"
   - "echo ${CXX}"
   - "${CXX} --version"
   - "${CXX} -v"
   - "echo ${CMAKE_OPTIONS}"
-  - "cmake --version"
-  - " which cmake"
-  - "/usr/bin/cmake --version"
   - "cd ${DEPS_DIR}"
   - "git clone https://github.com/CMakePackagingProject/CMakePackagingProject"
   - "cd CMakePackagingProject"
