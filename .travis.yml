@@ -3,6 +3,7 @@ before_install:
   - "mkdir -p ${DEPS_DIR}"
   - "mkdir -p ${DEPS_DIR}/install"
 cache: 
+  - cmake
   - g++-8
   - gcc-8
 env: 
