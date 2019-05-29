@@ -8,7 +8,8 @@ env:
     - CMAKE_OPTIONS="-DCMAKE_PREFIX_PATH=${DEPS_DIR}/install -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/install"
     
 cache:
-  - g++-7
+  - g++-8
+  - gcc-8
 
 matrix:
   include:
@@ -19,16 +20,20 @@ matrix:
       addons:
        apt:
          packages: 
-           - g++-7
+           - g++-8
+           - gcc-8
+           -cmake
          sources: 
            - ubuntu-toolchain-r-test
+           - sourceline: 'deb https://apt.kitware.com/ubuntu/ xenial main'
+             key_url: 'https://apt.kitware.com/keys/kitware-archive-latest.asc'
     
 before_install:
     - mkdir -p ${DEPS_DIR}
     - mkdir -p ${DEPS_DIR}/install
     
 install:
-    - export CXX="g++-7" CC="gcc-7"
+    - export CXX="g++-8" CC="gcc-8"
     - echo ${PATH}
     - echo ${CXX}
     - ${CXX} --version
