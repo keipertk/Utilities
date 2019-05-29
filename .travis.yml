@@ -19,17 +19,15 @@ matrix:
       compiler: gcc
       addons:
        apt:
-         packages: 
-           - cmake
          sources: 
            - sourceline: 'deb https://apt.kitware.com/ubuntu/ xenial main'
              key_url: 'https://apt.kitware.com/keys/kitware-archive-latest.asc'        
-        apt:
-          packages:
+            - ubuntu-toolchain-r-test         
+          packages: 
+           - cmake
             - g++-8
             - gcc-8
-          sources:
-            - ubuntu-toolchain-r-test
+
     
 before_install:
     - mkdir -p ${DEPS_DIR}
